@@ -1,0 +1,479 @@
+cat > /mnt/user-data/outputs/nebulous_melee2.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebulous – The Savage Mêlée 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#FFD700;--silver:#C0C0C0;--bronze:#CD7F32;
+  --bg:#03070f;--cyan:#00e5ff;--pink:#ff2d78;
+  --green:#00ff88;--purple:#a855f7;--red:#ff3b3b;--orange:#ff8c00;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:#e0f0ff;font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 50%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 42% 8%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 68%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 28%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 82%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(2px 2px at 18% 88%,rgba(0,229,255,.35) 0%,transparent 100%),
+    radial-gradient(2px 2px at 82% 42%,rgba(168,85,247,.25) 0%,transparent 100%);
+  pointer-events:none;z-index:0;}
+.container{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:40px 16px 80px;}
+
+/* HEADER */
+header{text-align:center;margin-bottom:46px;}
+.game-label{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:10px;color:var(--cyan);opacity:.6;text-transform:uppercase;margin-bottom:10px;}
+h1{font-family:'Orbitron',monospace;font-size:clamp(24px,7vw,50px);font-weight:900;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 35%,var(--pink) 70%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.05;letter-spacing:2px;}
+.subtitle{margin-top:10px;font-size:12px;color:rgba(160,200,255,.5);letter-spacing:5px;text-transform:uppercase;}
+
+/* RECAP BOX */
+.recap-box{
+  background:linear-gradient(140deg,rgba(255,215,0,.06) 0%,rgba(3,7,20,.95) 100%);
+  border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:20px 22px;margin-bottom:40px;
+}
+.recap-title{font-family:'Orbitron',monospace;font-size:13px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.recap-podium{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.recap-place{padding:8px 14px;border-radius:8px;text-align:center;min-width:90px;}
+.rp1{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);}
+.rp2{background:rgba(192,192,192,.07);border:1px solid rgba(192,192,192,.2);}
+.rp3{background:rgba(205,127,50,.08);border:1px solid rgba(205,127,50,.2);}
+.recap-icon{font-size:18px;}
+.recap-name{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;}
+.rp1 .recap-name{color:var(--gold);}
+.rp2 .recap-name{color:var(--silver);}
+.rp3 .recap-name{color:var(--bronze);}
+.recap-sub{font-size:11px;color:rgba(180,200,230,.45);margin-top:2px;}
+.recap-text{font-size:13px;color:rgba(180,210,255,.65);line-height:1.7;}
+.recap-text b{color:#fff;}
+.recap-text em{color:var(--cyan);font-style:normal;}
+
+/* SECTION */
+.section-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(14px,3.5vw,20px);
+  letter-spacing:3px;text-transform:uppercase;padding-bottom:10px;
+  border-bottom:1px solid rgba(0,229,255,.2);display:flex;align-items:center;gap:12px;margin:44px 0 18px;}
+.section-sub{font-size:12px;color:rgba(140,180,220,.5);letter-spacing:2px;font-family:'Orbitron',monospace;margin-bottom:18px;}
+
+/* MOMENT CARD */
+.moment{
+  background:linear-gradient(140deg,rgba(7,26,62,.88) 0%,rgba(3,7,20,.94) 100%);
+  border:1px solid rgba(10,74,255,.2);border-radius:12px;margin-bottom:12px;overflow:hidden;
+  animation:fadeUp .4s ease both;
+}
+.moment-header{padding:7px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.05);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;}
+.mtime{color:var(--cyan);}
+.mactors{color:rgba(200,220,255,.6);flex:1;text-align:center;}
+.mtag{padding:2px 10px;border-radius:20px;font-size:9px;white-space:nowrap;}
+.tag-clash{background:rgba(255,140,0,.12);border:1px solid rgba(255,140,0,.3);color:var(--orange);}
+.tag-dom{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);color:var(--gold);}
+.tag-new{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);color:var(--green);}
+.tag-chaos{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:var(--purple);}
+.tag-trick{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan);}
+.moment-body{padding:14px 18px;}
+.moment-body p{font-size:13.5px;line-height:1.78;color:rgba(190,215,255,.72);}
+.moment-body p em{color:var(--cyan);font-style:normal;font-weight:700;}
+.moment-body p b{color:#fff;font-weight:700;}
+.moment-body p .kill{color:var(--red);font-weight:700;}
+.moment-body p .hype{color:var(--gold);font-weight:700;}
+.moment-body p .trash{color:#ff6060;font-weight:700;}
+
+/* FINAL SCOREBOARD */
+.final-score{
+  background:rgba(0,229,255,.03);border:1px solid rgba(0,229,255,.12);
+  border-radius:10px;padding:14px 18px;margin:20px 0;
+}
+.final-score-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:var(--cyan);margin-bottom:12px;opacity:.7;}
+.fs-row{display:grid;grid-template-columns:28px 1fr auto auto;align-items:center;gap:8px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.fs-row:last-child{border-bottom:none;}
+.fs-pos{font-family:'Orbitron',monospace;font-size:11px;color:rgba(150,180,220,.5);text-align:center;}
+.fs-name{font-size:14px;font-weight:700;}
+.fs-pts{font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan);text-align:right;}
+.fs-tag{font-size:9px;padding:1px 7px;border-radius:10px;font-family:'Orbitron',monospace;white-space:nowrap;}
+.fs-new{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);color:var(--green);}
+.fs-old{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);color:var(--cyan);}
+.fs-pen{background:rgba(255,45,120,.1);border:1px solid rgba(255,45,120,.3);color:var(--pink);}
+
+/* RANK CARDS */
+.rank-card{position:relative;background:linear-gradient(140deg,rgba(7,26,62,.92) 0%,rgba(4,9,26,.97) 100%);
+  border-radius:14px;margin-bottom:14px;overflow:hidden;animation:fadeUp .45s ease both;transition:transform .2s;}
+.rank-card:hover{transform:translateX(5px);}
+.rbar{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;}
+.routline{position:absolute;inset:0;border-radius:14px;pointer-events:none;}
+.rinner{padding:15px 18px 15px 26px;}
+.rtop{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.rbadge{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',monospace;font-weight:900;font-size:15px;flex-shrink:0;margin-top:2px;}
+.rnamerow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.rname{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(13px,3.5vw,18px);letter-spacing:1px;}
+.rtag{font-size:10px;padding:2px 9px;border-radius:20px;font-family:'Orbitron',monospace;letter-spacing:1px;white-space:nowrap;}
+.rtag-lv{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);color:var(--cyan);}
+.rtag-new{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);color:var(--green);font-size:9px;}
+.rtag-pen{background:rgba(255,45,120,.1);border:1px solid rgba(255,45,120,.35);color:var(--pink);font-size:9px;}
+.win-pill{display:inline-block;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.22);
+  border-radius:6px;padding:3px 10px;font-family:'Orbitron',monospace;font-size:11px;
+  color:var(--green);letter-spacing:1px;margin-bottom:10px;}
+.rstory{font-size:13px;line-height:1.75;border-left:2px solid rgba(0,229,255,.15);padding-left:12px;margin-bottom:12px;color:rgba(190,220,255,.72);}
+.rstory em{color:var(--cyan);font-style:normal;font-weight:700;}
+.rstory b{color:#fff;}
+.rstory .hype{color:var(--gold);font-weight:700;}
+.rstory .trash{color:#ff6060;font-weight:700;}
+.rstory .kill{color:var(--red);font-weight:700;}
+.rstory.clash{color:rgba(255,170,170,.7);border-left-color:rgba(255,59,59,.3);}
+.rstory.clash em{color:var(--red);}
+.rstory.roast{color:rgba(255,140,140,.65);border-left-color:rgba(180,0,0,.4);}
+.rstory.roast em{color:#ff4444;font-style:normal;font-weight:700;}
+.rstats{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:5px;}
+.rstat{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:5px 9px;}
+.rstat-l{font-size:9px;color:rgba(140,170,210,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:1px;}
+.rstat-v{font-size:12px;font-weight:700;color:#cde0ff;}
+.rstat-v.c{color:var(--cyan);}.rstat-v.g{color:var(--green);}.rstat-v.w{color:#ffaa00;}.rstat-v.r{color:var(--pink);}
+
+/* Rank colors */
+.p1 .rbar{background:linear-gradient(180deg,#ffd700,#f0a500);box-shadow:0 0 20px rgba(255,215,0,.8);}
+.p1 .routline{border:1px solid rgba(255,215,0,.4);}
+.p1 .rbadge{background:radial-gradient(circle,#ffd700,#b8860b);color:#000;box-shadow:0 0 22px rgba(255,215,0,.7);}
+.p1 .rname{color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.5);}
+.p2 .rbar{background:linear-gradient(180deg,#e8e8e8,#999);box-shadow:0 0 12px rgba(192,192,192,.5);}
+.p2 .routline{border:1px solid rgba(192,192,192,.25);}
+.p2 .rbadge{background:radial-gradient(circle,#e8e8e8,#888);color:#000;}
+.p2 .rname{color:var(--silver);}
+.p3 .rbar{background:linear-gradient(180deg,#cd7f32,#8b4513);box-shadow:0 0 12px rgba(205,127,50,.5);}
+.p3 .routline{border:1px solid rgba(205,127,50,.3);}
+.p3 .rbadge{background:radial-gradient(circle,#cd7f32,#7a4010);color:#fff;}
+.p3 .rname{color:var(--bronze);}
+.p4 .rbar{background:var(--green);}
+.p4 .routline{border:1px solid rgba(0,255,136,.25);}
+.p4 .rbadge{background:radial-gradient(circle,#00ff88,#00884a);color:#000;}
+.p4 .rname{color:var(--green);}
+.p5 .rbar,.p6 .rbar,.p7 .rbar{background:var(--cyan);opacity:.5;}
+.p5 .routline,.p6 .routline,.p7 .routline{border:1px solid rgba(0,229,255,.15);}
+.p5 .rbadge,.p6 .rbadge,.p7 .rbadge{background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.3);color:rgba(180,230,255,.9);font-size:12px;}
+.p5 .rname,.p6 .rname,.p7 .rname{color:var(--cyan);}
+.p8 .rbar,.p9 .rbar,.p10 .rbar{background:#0a4aff;opacity:.45;}
+.p8 .routline,.p9 .routline,.p10 .routline{border:1px solid rgba(10,74,255,.2);}
+.p8 .rbadge,.p9 .rbadge,.p10 .rbadge{background:rgba(10,74,255,.18);border:1px solid rgba(10,74,255,.35);color:rgba(170,210,255,.8);font-size:12px;}
+.p8 .rname,.p9 .rname,.p10 .rname{color:#7eb8ff;}
+.p11 .rbar,.p12 .rbar,.p13 .rbar{background:var(--orange);opacity:.5;}
+.p11 .routline,.p12 .routline,.p13 .routline{border:1px solid rgba(255,140,0,.2);}
+.p11 .rbadge,.p12 .rbadge,.p13 .rbadge{background:rgba(255,140,0,.12);border:1px solid rgba(255,140,0,.35);color:var(--orange);font-size:12px;}
+.p11 .rname,.p12 .rname,.p13 .rname{color:var(--orange);}
+.p14 .rbar,.p15 .rbar,.p16 .rbar{background:var(--red);opacity:.55;}
+.p14 .routline,.p15 .routline,.p16 .routline{border:1px solid rgba(255,59,59,.25);}
+.p14 .rbadge,.p15 .rbadge,.p16 .rbadge{background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.35);color:var(--red);font-size:12px;}
+.p14 .rname,.p15 .rname,.p16 .rname{color:var(--red);}
+.p17 .rbar,.p18 .rbar,.p19 .rbar,.p20 .rbar,.p21 .rbar,.p22 .rbar,.p23 .rbar,.p24 .rbar,.p25 .rbar,.p26 .rbar,.p27 .rbar,.p28 .rbar,.p29 .rbar{background:#660000;opacity:.7;}
+.p17 .routline,.p18 .routline,.p19 .routline,.p20 .routline,.p21 .routline,.p22 .routline,.p23 .routline,.p24 .routline,.p25 .routline,.p26 .routline,.p27 .routline,.p28 .routline,.p29 .routline{border:1px solid rgba(120,0,0,.4);}
+.p17 .rbadge,.p18 .rbadge,.p19 .rbadge,.p20 .rbadge,.p21 .rbadge,.p22 .rbadge,.p23 .rbadge,.p24 .rbadge,.p25 .rbadge,.p26 .rbadge,.p27 .rbadge,.p28 .rbadge,.p29 .rbadge{background:rgba(80,0,0,.3);border:1px solid rgba(180,0,0,.4);color:#ff6666;font-size:11px;}
+.p17 .rname,.p18 .rname,.p19 .rname,.p20 .rname,.p21 .rname,.p22 .rname,.p23 .rname,.p24 .rname,.p25 .rname,.p26 .rname,.p27 .rname,.p28 .rname,.p29 .rname{color:#ff4444;}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.2),transparent);margin:36px 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+footer{text-align:center;margin-top:40px;font-size:10px;color:rgba(80,120,180,.3);letter-spacing:3px;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="game-label">Nebulous.io · Trick Mode · Saison 2</div>
+  <h1>THE SAVAGE<br>MÊLÉE II</h1>
+  <div class="subtitle">29 joueurs · 1 map · 30 min · No élimination · Sauvage pur</div>
+</header>
+
+<!-- RECAP -->
+<div class="recap-box">
+  <div class="recap-title">⚡ RECAP — MÊLÉE PRÉCÉDENTE</div>
+  <div class="recap-podium">
+    <div class="recap-place rp1"><div class="recap-icon">🥇</div><div class="recap-name">toka</div><div class="recap-sub">Champion · 1 227 wins</div></div>
+    <div class="recap-place rp2"><div class="recap-icon">🥈</div><div class="recap-name">melo</div><div class="recap-sub">Finaliste · K/D #1</div></div>
+    <div class="recap-place rp3"><div class="recap-icon">🥉</div><div class="recap-name">Curse</div><div class="recap-sub">3ème · 1 247 wins</div></div>
+  </div>
+  <div class="recap-text">
+    La dernière mêlée a couronné <b>toka</b> après une finale épique contre <b>melo</b>. <em>Curse</em> avait le record de wins mais toka et melo étaient au-dessus ce jour-là. <b>Tashiro</b> s'est fait éliminer en 47 secondes — record de honte. <b>Wuchi</b> a été coordonné dessus comme toujours à 9 minutes. <b>Why:(</b> pénalisé pour ses deux comptes a terminé 8ème. Aujourd'hui <em>15 nouveaux challengers</em> rejoignent les 14 anciens pour une mêlée sans élimination — 30 minutes, tout le monde joue jusqu'au bout, seul le score final compte.
+  </div>
+</div>
+
+<!-- PHASE 1 -->
+<div class="section-title"><span>⚡</span> 0 — 10 MINUTES · L'INSTALLATION</div>
+<div class="section-sub">LES NOUVEAUX SE PRÉSENTENT · LES ANCIENS REPRENNENT LEURS MARQUES</div>
+
+<div class="moment" style="animation-delay:.04s">
+  <div class="moment-header"><span class="mtime">00:00</span><span class="mactors">29 duos · 1 map · Le chaos commence</span><span class="mtag tag-chaos">LANCEMENT</span></div>
+  <div class="moment-body"><p>La map s'ouvre. <b>29 duos</b> spawnnent simultanément — les anciens reconnaissent leur terrain, les nouveaux cherchent leurs repères. <em>hydro level 1457 avec 1 774 victoires</em> — le record absolu de toute cette mêlée — spawn en zone centrale et commence à sauvager immédiatement. Son coéquipier suit. À l'opposé <b>no name level 8882</b> — ce level est une absurdité totale — occupe un quart de la map à lui seul. <span class="hype">La question c'est pas qui va dominer. La question c'est qui va sauvager assez longtemps pour accumuler les points.</span></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.07s">
+  <div class="moment-header"><span class="mtime">01:30</span><span class="mactors">hyzer vs toka · premier clash ancien-nouveau</span><span class="mtag tag-clash">CLASH</span></div>
+  <div class="moment-body"><p><b>hyzer</b> level 2191, nouveau, <em>929 victoires sur 210 000 parties</em> — il est pas là pour faire de la figuration. Il croise <b>toka</b> le champion sortant dès la première minute et demie. <span class="hype">Toka reconnaît un sauvageur sérieux.</span> hyzer joue coordonné avec son coéquipier — trick split propre, feinte à gauche, récupération rapide. toka répond par sa lecture habituelle. <em>Deux styles différents, même niveau d'intention.</em> Personne prend le dessus — ils se séparent et partent chacun sauvager dans leur zone. Premier signal : <b>hyzer est là pour durer.</b></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.10s">
+  <div class="moment-header"><span class="mtime">02:45</span><span class="mactors">wassim · la catastrophe annoncée</span><span class="mtag tag-chaos">HONTE</span></div>
+  <div class="moment-body"><p><b>wassim</b> level 623. <em>154 victoires sur 173 000 parties.</em> <span class="trash">Il arrive sur la map et en 2 minutes il a déjà perdu plus de blobs qu'il en a mangé.</span> Son K/D en dessous de 1 se confirme immédiatement. Son coéquipier essaie de compenser mais wassim joue comme quelqu'un qui découvre le concept de sauvage pour la première fois. <span class="trash">173 000 parties pour un win rate pareille c'est pas de la malchance — c'est un talent naturel pour être mauvais.</span> Il s'installe dans le fond de la map et fait semblant d'exister.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.13s">
+  <div class="moment-header"><span class="mtime">04:10</span><span class="mactors">hydro · le nouveau boss entre en scène</span><span class="mtag tag-dom">DOMINATION</span></div>
+  <div class="moment-body"><p><b>hydro</b> level 1457, <em>1 774 victoires — le record absolu de cette mêlée combinée</em>. À 4 minutes il a déjà le score le plus élevé de la map. Son sauvage c'est de l'art industriel — trick split permanent, coordination parfaite avec son coéquipier, chaque kill est net. <span class="hype">Les anciens le remarquent. toka le regarde de loin. melo change de zone sans que ça se voit.</span> hydro s'installe en haut du classement provisoire comme si la map lui appartenait depuis toujours. <b>1 774 victoires ça s'invente pas.</b></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.16s">
+  <div class="moment-header"><span class="mtime">05:50</span><span class="mactors">no name · le level sans logique</span><span class="mtag tag-chaos">ANOMALIE</span></div>
+  <div class="moment-body"><p><b>no name</b> level 8882. <span class="trash">Le level le plus grotesque de toute l'histoire de ces mêlées.</span> <em>479 000 parties — presque un demi-million.</em> Et seulement 533 victoires. C'est mathématiquement fascinant : jouer 479 000 parties et gagner 533 fois c'est un win rate de 0.11%. <span class="trash">C'est moins que le hasard pur. Si tu jouais en appuyant au hasard sur l'écran tu gagnerais plus souvent.</span> Mais son volume de sauvage est réel — il accumule des points lentement, très lentement, mais il est là et il essaie. <em>Son coéquipier mérite une médaille de patience.</em></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.19s">
+  <div class="moment-header"><span class="mtime">07:20</span><span class="mactors">myoxx vs Curse · vétéran contre vétéran</span><span class="mtag tag-clash">RESPECT</span></div>
+  <div class="moment-body"><p><b>myoxx</b> level 1842, <em>505 victoires sur 242 000 parties</em> — un volume de jeu impressionnant. Il croise <b>Curse</b> le 3ème de la dernière mêlée. <span class="hype">Deux joueurs qui ont vécu des milliers de parties se jaugent.</span> myoxx joue en trick split coordonné — sa technique est solide. Curse répond avec son sauvage métronome habituel. <em>Curse prend l'avantage sur la durée</em> — ses 1 247 victoires versus 505 font la différence dans les décisions de fin de duel. myoxx tient bien mais perd l'échange de points. Il note la leçon et part vers d'autres cibles.</p></div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="section-title"><span>🔥</span> 10 — 20 MINUTES · LES CLASHES ÉPIQUES</div>
+<div class="section-sub">LA MAP SE DENSIFIE · LES DUOS QUI SAUVAGENT ENSEMBLE DOMINENT</div>
+
+<div class="moment" style="animation-delay:.22s">
+  <div class="moment-header"><span class="mtime">11:05</span><span class="mactors">zone · le joueur pénalisé joue quand même</span><span class="mtag tag-trick">TRICK GAME</span></div>
+  <div class="moment-body"><p><b>zone</b> level 1522, <em>1 059 victoires</em> — un chiffre solide. Mais voilà le problème : la grande majorité de ces wins viennent du trick game, pas du savage game. <span class="trash">Faire des tricks pour scorer des points dans un mode solo c'est pas la même chose que sauvager en équipe pendant 30 minutes.</span> Sur cette map zone fait ce qu'il sait faire — il trick, il split, il accumule des petits points. Mais face à des joueurs qui sauvagent pour de vrai, <em>sa technique trick game se heurte à la réalité du sauvage en duo.</em> La pénalité sur son score final va se faire sentir.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.25s">
+  <div class="moment-header"><span class="mtime">12:40</span><span class="mactors">hydro + melo · les deux meilleurs K/D se croisent</span><span class="mtag tag-clash">CLASH ÉPIQUE</span></div>
+  <div class="moment-body"><p><span class="hype">LE MATCH DE LA PARTIE.</span> <b>hydro</b> avec ses 1 774 victoires et <b>melo</b> avec son K/D record se trouvent face à face dans le couloir est. <em>Deux philosophies du sauvage.</em> hydro joue le volume — trick split massif, coordination maximum, accumulation constante. melo joue l'efficacité pure — chaque mouvement est calculé, chaque blob mangé est mérité. <span class="hype">5 minutes de duel absolu.</span> Les deux coéquipiers sont parfaitement sync de chaque côté. <em>hydro prend un léger avantage sur le long terme</em> — ses 1 774 victoires reflètent une endurance de sauvage que même melo doit respecter. melo note et recalibre.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.28s">
+  <div class="moment-header"><span class="mtime">14:15</span><span class="mactors">toka · le champion sauvage en silence</span><span class="mtag tag-dom">DOMINATION SILENCIEUSE</span></div>
+  <div class="moment-body"><p>Pendant que tout le monde regarde les gros clashes, <b>toka</b> fait ce qu'il fait dans chaque partie — <em>accumuler des points sans faire de bruit.</em> À 14 minutes il est dans le top 3 du classement provisoire sans avoir eu de clash notable. Son coéquipier est parfaitement placé. <span class="hype">toka joue la partie entière comme un marathon.</span> Pas de frime, pas de show — juste du sauvage propre, régulier, implacable. C'est pour ça qu'il a 1 227 victoires.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.31s">
+  <div class="moment-header"><span class="mtime">15:50</span><span class="mactors">gucci vs capi · clash inattendu</span><span class="mtag tag-clash">SURPRISE</span></div>
+  <div class="moment-body"><p><b>gucci</b> level 2041, <em>131 victoires sur 34 000 parties</em> — pas les stats les plus impressionnantes. <b>capi</b> level 1640, <em>496 victoires sur 169 000 parties</em> — plus de volume mais un win rate tout aussi décevant. <span class="trash">Deux joueurs qui ont joué des centaines de milliers de parties combinées et qui ont collectivement moins de 630 victoires.</span> Leur clash est animé — les deux essaient, les deux font des erreurs, les deux perdent des blobs. <em>C'est le combat pour le bas du classement le plus intéressant de la soirée.</em> gucci sort légèrement devant — son level plus élevé reflète au moins de l'expérience brute.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.34s">
+  <div class="moment-header"><span class="mtime">17:00</span><span class="mactors">hyzer · confirmation du niveau</span><span class="mtag tag-dom">TOP 5</span></div>
+  <div class="moment-body"><p>À mi-partie <b>hyzer</b> est solidement installé dans le top 5. <em>929 victoires sur 210 000 parties</em> — son sauvage en duo est propre, coordonné, efficace. Il a tenu tête à toka en début de partie, sauvagé contre plusieurs adversaires sérieux, et son coéquipier n'a jamais lâché. <span class="hype">hyzer est le meilleur nouveau de cette mêlée jusqu'ici.</span> Son style trick split coordonné avec son duo est au-dessus de la plupart des nouveaux.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.37s">
+  <div class="moment-header"><span class="mtime">18:30</span><span class="mactors">leyy · le débutant qui surprend</span><span class="mtag tag-new">SURPRISE</span></div>
+  <div class="moment-body"><p><b>leyy</b> level 1193, <em>27 victoires sur 12 056 parties</em> — <span class="trash">statistiquement c'est une catastrophe.</span> Mais dans cette mêlée leyy joue avec une énergie que ses stats reflètent pas. Il fait des tricks, il essaie des feintes, il sauvage avec son coéquipier. <em>0.22% de win rate sur papier mais dans la partie il participe vraiment.</em> <span class="trash">Le problème c'est que participer et marquer des points c'est pas la même chose — et ses stats de sauvage sont trop faibles pour compenser.</span></p></div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="section-title"><span>👑</span> 20 — 30 MINUTES · LA COURSE FINALE</div>
+<div class="section-sub">CHAQUE KILL COMPTE · LES MEILLEURS SAUVAGEURS SE RÉVÈLENT</div>
+
+<div class="moment" style="animation-delay:.40s">
+  <div class="moment-header"><span class="mtime">21:10</span><span class="mactors">hydro vs toka · le duel pour la 1ère place</span><span class="mtag tag-clash">FINALE ANTICIPÉE</span></div>
+  <div class="moment-body"><p><span class="hype">Le moment que tout le monde attendait.</span> <b>hydro</b> — le nouveau avec 1 774 victoires — et <b>toka</b> — le champion sortant — se retrouvent dans la zone centrale pour ce qui est clairement le clash pour la première place. <em>hydro joue agressif</em> — ses 608 310 tricks totaux montrent qu'il est à l'aise dans l'intensité. toka joue patient — il attend, il lit, il construit. <span class="hype">7 minutes de duel pur dans les 30 minutes de la partie.</span> Les deux duos sont parfaits, les coéquipiers font leur travail. <em>hydro accumule plus de points sur le duel grâce à son volume de sauvage supérieur.</em> toka perd légèrement le duel mais reste dans la course.</p></div>
+</div>
+
+<div class="moment" style="animation-delay:.43s">
+  <div class="moment-header"><span class="mtime">24:00</span><span class="mactors">Curse vs hyzer · 3ème place en jeu</span><span class="mtag tag-clash">PODIUM</span></div>
+  <div class="moment-body"><p><b>Curse</b> et <b>hyzer</b> se disputent la 3ème place dans les 6 dernières minutes. <em>Curse a ses 1 247 victoires, hyzer a ses 929 et sa fraîcheur de nouveau.</em> Le duel est serré — Curse joue en mode automatique, chaque geste est parfait d'expérience. hyzer joue avec de l'ambition, il veut prouver sa place dans ce classement. <span class="hype">Curse prend le dessus dans les deux dernières minutes</span> — son endurance de sauvage sur 30 minutes est supérieure. hyzer termine 4ème mais avec la tête haute. <em>Il a montré que les nouveaux sont là pour rester.</em></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.46s">
+  <div class="moment-header"><span class="mtime">27:30</span><span class="mactors">melo · retour en force</span><span class="mtag tag-dom">COMEBACK</span></div>
+  <div class="moment-body"><p>Après avoir perdu le gros duel contre hydro à mi-partie, <b>melo</b> a sauvagé en silence pendant 15 minutes. À 27:30 <em>son score provisoire remonte</em> — son K/D record se manifeste dans chaque échange, chaque blob mangé lui rapporte des points. <span class="hype">melo finit en crescendo.</span> Il récupère la 2ème place dans les 3 dernières minutes grâce à son efficacité absolue. Son coéquipier parfaitement coordonné maximise chaque opportunité. <b>melo peut pas être ignoré dans cette mêlée.</b></p></div>
+</div>
+
+<div class="moment" style="animation-delay:.49s;border-color:rgba(255,215,0,.3)">
+  <div class="moment-header" style="background:rgba(255,215,0,.05)">
+    <span class="mtime" style="color:var(--gold)">30:00</span>
+    <span class="mactors" style="color:var(--gold)">CHRONO ZÉRO · RÉSULTATS FINALS</span>
+    <span class="mtag tag-dom">FIN</span>
+  </div>
+  <div class="moment-body">
+    <p><span class="hype">Le chrono tombe. 30 minutes de sauvage pur se terminent.</span> <b>hydro</b> termine en tête — ses <em>1 774 victoires</em> se sont confirmées sur la map. <b>melo</b> récupère la 2ème place in extremis. <b>Curse</b> solide en 3ème comme toujours. Les nouveaux ont montré leur niveau — certains vont peser dans les futures mêlées, d'autres ont prouvé que leur level c'est juste du chiffre. <span class="hype">Le classement final est impitoyable.</span></p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CLASSEMENT FINAL -->
+<div class="section-title"><span>🏆</span> CLASSEMENT FINAL — MÊLÉE II</div>
+
+<div id="ranking"></div>
+
+<footer>NEBULOUS · TRICK MODE · THE SAVAGE MÊLÉE II · CLASSEMENT OFFICIEL</footer>
+</div>
+
+<script>
+const players = [
+  // ANCIENS
+  {rank:1, css:"p1", name:"hydro", lv:"LVL 1457", isNew:true, pen:false,
+   wins:1774, games:280779, eaten:53693389, lost:48615590, tricks:608310,
+   sc:"",
+   story:`<b>hydro</b> est le nouveau Champion. <em>1 774 victoires — le record absolu de ces deux mêlées combinées.</em> Il arrive dans ce classement et prend la première place comme si elle lui était réservée. Son sauvage est industriel — trick split permanent, coordination parfaite, accumulation sans relâche pendant 30 minutes. <span class="hype">608 000 tricks effectués — personne dans ce classement a trické autant dans sa carrière.</span> hydro n'est pas juste le meilleur nouveau — il est le meilleur tout court dans cette mêlée. Le champion sortant toka a été challengé et c'est hydro qui a fait la différence.`},
+  {rank:2, css:"p2", name:"melo", lv:"LVL 825", isNew:false, pen:false,
+   wins:884, games:184399, eaten:22923778, lost:19783959, tricks:172803,
+   sc:"",
+   story:`<b>melo</b> finit 2ème — encore. Level 825, meilleur K/D du classement entier, et une capacité à revenir dans les parties que personne peut expliquer rationnellement. <em>Il a perdu le gros duel contre hydro à mi-partie et il est quand même remonté en 2ème.</em> <span class="hype">Ce joueur est fait d'un matériau différent des autres.</span> Ses mains font des trucs que son level justifie pas. Sa constance est terrifiante.`},
+  {rank:3, css:"p3", name:"Curse", lv:"LVL 1491", isNew:false, pen:false,
+   wins:1247, games:262614, eaten:30323386, lost:28438482, tricks:198275,
+   sc:"",
+   story:`<b>Curse</b> — 3ème pour la deuxième mêlée consécutive. <em>1 247 victoires, le meilleur win rate des anciens.</em> Sa régularité est sa force — il joue la même partie depuis 262 000 parties et il maîtrise chaque aspect. <span class="hype">Podium en mêlée II. Podium en mêlée I. C'est pas un accident — c'est Curse.</span>`},
+  {rank:4, css:"p4", name:"hyzer", lv:"LVL 2191", isNew:true, pen:false,
+   wins:929, games:210792, eaten:18022435, lost:16681506, tricks:156321,
+   sc:"",
+   story:`<b>hyzer</b> — <em>929 victoires</em>, 4ème à sa première mêlée. Le meilleur nouveau après hydro. Son sauvage en duo est propre, son trick split coordonné, et il a tenu tête à toka dès les premières minutes. <span class="hype">hyzer va être un problème sérieux dans les prochaines mêlées.</span> Il a clairement le niveau pour le podium — il lui manque juste quelques mêlées d'expérience.`},
+  {rank:5, css:"p5", name:"toka", lv:"LVL 1075", isNew:false, pen:false,
+   wins:1227, games:182496, eaten:33257984, lost:31184102, tricks:208939,
+   sc:"",
+   story:`<b>toka</b> — champion sortant, 5ème place. <em>Il a été challengé par hydro et la réalité du nouveau classement.</em> Sa régularité est toujours là — 1 227 victoires ça se confirme dans chaque partie. Mais hydro était un niveau au-dessus aujourd'hui. <span class="hype">toka reviendra. Il revient toujours.</span> Ce n'est pas une fin — c'est juste une mêlée où un nouveau plus fort était présent.`},
+  {rank:6, css:"p6", name:"Larasinne", lv:"LVL 1556", isNew:false, pen:false,
+   wins:1089, games:227870, eaten:24099263, lost:22490447, tricks:282279,
+   sc:"",
+   story:`<b>Larasinne</b> — <em>1 089 victoires</em>, 6ème place. Solide, régulière, présente. Son sauvage en duo est calibré pour durer 30 minutes et ça se voit dans ses résultats. <span class="hype">Elle est ancrée dans le top 7 de ce classement et ça va pas changer.</span>`},
+  {rank:7, css:"p7", name:"myoxx", lv:"LVL 1842", isNew:true, pen:false,
+   wins:505, games:242434, eaten:22442098, lost:19997356, tricks:213668,
+   sc:"",
+   story:`<b>myoxx</b> — nouveau, <em>505 victoires sur 242 000 parties</em>. Son volume de jeu est massif et son sauvage est solide. Il a bien géré sa 30 minutes, coordonné avec son coéquipier, et s'installe dans le top 10 à sa première mêlée. <span class="hype">myoxx a les bases — il doit maintenant améliorer son win rate pour grimper.</span>`},
+  {rank:8, css:"p8", name:"Tenza", lv:"LVL 1983", isNew:false, pen:false,
+   wins:757, games:221473, eaten:36833570, lost:36118959, tricks:308189,
+   sc:"",
+   story:`<b>Tenza</b> — 8ème, toujours dans le top 10. <em>757 victoires, le volume de tricks le plus élevé des anciens par partie.</em> Son sauvage est offensif et intense — 30 minutes à ce rythme c'est physique. Il accumule des points efficacement même sans être dans le top 5. <span class="hype">Tenza est une constante de ce classement.</span>`},
+  {rank:9, css:"p9", name:"athee", lv:"LVL 1125", isNew:false, pen:false,
+   wins:640, games:116374, eaten:19983388, lost:19195934, tricks:288474,
+   sc:"",
+   story:`<b>athee</b> — 9ème, le roi du trick qui sauvage de mieux en mieux. <em>288 000 tricks en carrière</em> — sa mécanique est au niveau le plus élevé de ce classement. Il apprend à convertir ses tricks en sauvage efficace. <span class="hype">Quand athee comprendra complètement comment fermer une partie de sauvage, il va monter de plusieurs places.</span>`},
+  {rank:10, css:"p10", name:"⭐️", lv:"LVL 1331", isNew:false, pen:false,
+   wins:798, games:199062, eaten:13676205, lost:13389245, tricks:174168,
+   sc:"",
+   story:`<b>⭐️</b> — <em>798 victoires sur 199 000 parties</em>. Solide, constant, toujours dans le chaos et toujours vivant. Sa 10ème place reflète un niveau de jeu correct mais pas encore au niveau des vrais sauvageurs. <span class="hype">L'étoile brille dans la durée — pas toujours dans les sommets.</span>`},
+  {rank:11, css:"p11", name:"delta", lv:"LVL 1077", isNew:true, pen:false,
+   wins:663, games:131725, eaten:18216109, lost:17523876, tricks:287727,
+   sc:"",
+   story:`<b>delta</b> — nouveau, <em>663 victoires sur 131 000 parties</em>. Son K/D est correct et ses tricks par partie sont élevés. Il arrive dans ce classement avec un profil solide et une première mêlée honnête. <span class="hype">delta a les outils pour grimper — il doit juste apprendre à jouer avec les meilleurs.</span>`},
+  {rank:12, css:"p12", name:"Why:(", lv:"LVL 1201+1428", isNew:false, pen:true,
+   wins:1102, games:189619, eaten:28828170, lost:26846632, tricks:375389,
+   sc:"",
+   story:`<b>Why:(</b> — 12ème avec pénalité deux comptes. Ses <em>1 102 victoires combinées</em> sont réelles mais la règle est la règle. Son sauvage imprévisible en duo reste difficile à lire mais <span class="hype">la pénalité pèse et sans ses deux comptes son classement serait différent.</span>`},
+  {rank:13, css:"p13", name:"hyper", lv:"LVL 2399", isNew:false, pen:false,
+   wins:880, games:285962, eaten:22869076, lost:23337869, tricks:235124,
+   sc:"warn",
+   story:`<b>hypova</b> — <span class="trash">13ème. Level 2399 et toujours ce même K/D négatif.</span> Il perd plus qu'il mange depuis le début et 30 minutes de mêlée sans élimination l'ont confirmé. <em>880 victoires c'est honnête</em> mais pour ce level c'est une déception chronique. <span class="trash">Le level 2399 c'est ton seul argument et il tient de moins en moins.</span>`},
+  {rank:14, css:"p14", name:"spezzy", lv:"LVL 1335", isNew:true, pen:false,
+   wins:177, games:81501, eaten:5759397, lost:6695873, tricks:48349,
+   sc:"clash",
+   story:`<b>spezzy</b> — nouveau, <em>177 victoires sur 81 000 parties</em>. <span class="trash">Son K/D est en dessous de 1 — il perd plus qu'il mange.</span> Sa mêlée a confirmé ses stats : il sauvage mais perd des blobs à chaque échange. <span class="trash">81 000 parties avec ce résultat c'est un problème de fond, pas un problème de forme.</span> Il doit revoir ses bases du sauvage en duo.`},
+  {rank:15, css:"p15", name:"zone", lv:"LVL 1522", isNew:true, pen:true,
+   wins:1059, games:99753, eaten:14248760, lost:13290216, tricks:116910,
+   sc:"clash",
+   story:`<b>zone</b> — <em>1 059 victoires</em> mais la pénalité trick game change tout. Ses wins viennent majoritairement du trick mode solo — pas du sauvage en duo. <span class="trash">Dans cette mêlée ça s'est vu : zone tricks bien mais sauvage mal.</span> La coordination en duo, tenir 30 minutes, accumuler les kills — c'est pas son jeu naturel. <span class="trash">1 059 wins en trick game c'est bien. Dans une mêlée sauvage c'est pas la même chose.</span>`},
+  {rank:16, css:"p16", name:"omber", lv:"LVL 1213", isNew:true, pen:false,
+   wins:584, games:155663, eaten:7347439, lost:7739763, tricks:96172,
+   sc:"clash",
+   story:`<b>omber</b> — <em>K/D en dessous de 1</em>, 584 victoires sur 155 000 parties. <span class="trash">Il perd plus qu'il mange — c'est la définition de quelqu'un qui joue beaucoup sans améliorer son sauvage.</span> Sa vie la plus longue est de 10 minutes — il survit rarement jusqu'à la fin d'une partie normale. Dans cette mêlée il a confirmé ses stats avec une régularité décevante.`},
+  {rank:17, css:"p17", name:"nayy", lv:"LVL 1217", isNew:true, pen:false,
+   wins:178, games:52716, eaten:7728303, lost:7377501, tricks:91210,
+   sc:"roast",
+   story:`<b>nayy</b> — <em>178 victoires sur 52 000 parties</em>. <span class="trash">Le win rate est dans les plus bas de ce classement.</span> Son K/D est correct — il sait se battre — mais gagner des parties c'est une autre histoire. <span class="trash">nayy joue bien pendant 15 minutes et disparaît. 52 000 fois il a recommencé le même schéma.</span>`},
+  {rank:18, css:"p18", name:"soli", lv:"LVL 1562", isNew:false, pen:false,
+   wins:398, games:70621, eaten:8864650, lost:8718368, tricks:73774,
+   sc:"roast",
+   story:`<b>soli</b> — <span class="trash">Level 1562, 18ème place. Le ratio le plus humiliant de ce classement.</span> Plus de level que quasiment tout le monde ici et moins de résultats que des joueurs level 800. <em>398 victoires sur 70 000 parties</em> — <span class="trash">t'as plus d'XP que de compétence et c'est la statistique la plus triste de cette mêlée.</span>`},
+  {rank:19, css:"p19", name:"laser", lv:"LVL 1327", isNew:true, pen:false,
+   wins:476, games:155975, eaten:16335182, lost:15179851, tricks:184278,
+   sc:"roast",
+   story:`<b>laser</b> — <em>476 victoires sur 155 000 parties</em>. <span class="trash">Son K/D est correct mais ses wins sont trop rares pour ce volume de jeu.</span> Sa première mêlée était correcte techniquement mais le résultat final dit tout — <span class="trash">155 000 parties pour un win rate pareil c'est des années de pratique pour rester au même niveau.</span>`},
+  {rank:20, css:"p20", name:"Near", lv:"LVL 1091", isNew:false, pen:false,
+   wins:448, games:116094, eaten:20259523, lost:18821243, tricks:128574,
+   sc:"roast",
+   story:`<b>Near</b> — <span class="trash">le fragger éternel qui gagne pas. 20ème place.</span> Il est toujours là, il kill toujours bien, et il finit toujours en bas. <span class="trash">116 000 parties et la leçon est pas rentrée : sauvager c'est tenir 30 minutes, pas juste les 10 premières.</span>`},
+  {rank:21, css:"p21", name:"capi", lv:"LVL 1640", isNew:true, pen:false,
+   wins:496, games:169061, eaten:28103958, lost:26238454, tricks:167294,
+   sc:"roast",
+   story:`<b>capi</b> — <em>496 victoires sur 169 000 parties</em>. Level 1640 pour ce résultat. <span class="trash">169 000 parties c'est une carrière entière — et les résultats montrent que cette carrière a été passée à accumuler de l'XP plutôt qu'à apprendre à gagner.</span> Son sauvage en duo est trop passif pour ce niveau de jeu.`},
+  {rank:22, css:"p22", name:"gucci", lv:"LVL 2041", isNew:true, pen:false,
+   wins:131, games:34302, eaten:7258305, lost:7418495, tricks:26699,
+   sc:"roast",
+   story:`<b>gucci</b> — <em>131 victoires sur 34 000 parties</em>. <span class="trash">K/D en dessous de 1, tricks minimes, et un win rate qui fait pleurer.</span> Level 2041 et 131 wins — c'est le ratio level/performance le plus mauvais des nouveaux. <span class="trash">gucci a le level pour impressionner les débutants. Dans cette mêlée ça fait juste rire.</span>`},
+  {rank:23, css:"p23", name:"Wuchi", lv:"LVL 1443", isNew:false, pen:false,
+   wins:218, games:73801, eaten:10970779, lost:10378664, tricks:107763,
+   sc:"roast",
+   story:`<b>Wuchi</b> — <span class="trash">23ème. Encore. Toujours.</span> 73 000 parties, 218 victoires, <em>et la même erreur 73 000 fois</em> : grossir seul, se croire intouchable, se faire coordonner dessus. <span class="trash">Dans cette mêlée sans élimination même lui pouvait plus être exclu — et il a quand même trouvé le moyen d'être dans le bas du classement.</span>`},
+  {rank:24, css:"p24", name:"user", lv:"LVL 971", isNew:true, pen:false,
+   wins:63, games:42370, eaten:4483053, lost:4723304, tricks:31891,
+   sc:"roast",
+   story:`<b>user</b> — <em>63 victoires sur 42 000 parties</em>. <span class="trash">K/D négatif — il perd plus qu'il mange.</span> Sa vie la plus longue est 17 minutes — il peut même pas tenir une partie complète dans ses meilleures conditions. <span class="trash">user c'est le nom le plus anonyme du classement et malheureusement ses stats sont à l'image de ce pseudo.</span>`},
+  {rank:25, css:"p25", name:"ibo", lv:"LVL 2391", isNew:false, pen:false,
+   wins:251, games:71431, eaten:6343432, lost:5927264, tricks:58329,
+   sc:"roast",
+   story:`<b>ibo</b> — <span class="trash">Level 2391, 25ème place. Ce classement commence à être une tradition pour ibo.</span> Il arrive avec son level stratosphérique, son XP monstrueuse, et ses <em>251 malheureuses victoires</em>. <span class="trash">ibo tu pourrais pas être plus constant dans ta médiocrité. C'est presque admirable.</span>`},
+  {rank:26, css:"p26", name:"spezzy2", lv:"LVL 1335", isNew:true, pen:false,
+   wins:177, games:81501, eaten:5759397, lost:6695873, tricks:48349,
+   sc:"roast",
+   story:`<b>spezzy</b> confirmé dans le bas. <span class="trash">K/D négatif sur 81 000 parties — c'est un choix de vie à ce stade.</span>`},
+  {rank:27, css:"p27", name:"wassim", lv:"LVL 623", isNew:true, pen:false,
+   wins:154, games:173012, eaten:13411270, lost:13938380, tricks:62293,
+   sc:"roast",
+   story:`<b>wassim</b> — <em>154 victoires sur 173 000 parties</em>. <span class="trash">K/D négatif. Level 623. 173 000 parties pour 154 wins.</span> wassim c'est la définition de jouer des années sans progresser. <span class="trash">173 000 parties c'est une décennie de jeu. Et tu as 154 victoires à montrer. 154. C'est moins d'une victoire pour mille parties.</span> La mêlée a confirmé tout ça en direct.`},
+  {rank:28, css:"p28", name:"leyy", lv:"LVL 1193", isNew:true, pen:false,
+   wins:27, games:12056, eaten:768548, lost:705827, tricks:4902,
+   sc:"roast",
+   story:`<b>leyy</b> — <em>27 victoires sur 12 000 parties</em>. Nouveau, encore en apprentissage, ça se voit dans chaque échange. Son K/D est correct et c'est la seule chose positive. <span class="trash">27 victoires c'est pas un bilan — c'est une ligne sur un CV vide.</span> Il a de la marge pour progresser. Beaucoup de marge.`},
+  {rank:29, css:"p29", name:"no name", lv:"LVL 8882", isNew:true, pen:false,
+   wins:533, games:479931, eaten:25221097, lost:25171391, tricks:389467,
+   sc:"roast",
+   story:`<b>no name</b>. Level 8882. <em>479 000 parties.</em> <span class="trash">533 victoires. 0.11% de win rate.</span> On va pas passer trop de temps là-dessus parce que franchement les mots manquent. Le level 8882 c'est la chose la plus impressionnante et la plus inutile de ce classement en même temps. <span class="trash">479 000 parties — c'est littéralement des années de vie passées dans ce jeu — pour finir dernier d'une mêlée à 29 joueurs.</span> Le coéquipier de no name a besoin d'un soutien psychologique.`},
+];
+
+function fmt(n){if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'k';return n.toLocaleString();}
+
+const cont = document.getElementById('ranking');
+players.forEach((p,i)=>{
+  const wr=(p.wins/p.games*100).toFixed(3)+'%';
+  const kd=(p.eaten/p.lost).toFixed(4);
+  const tpg=(p.tricks/p.games).toFixed(2);
+  const kdC=parseFloat(kd)>=1.10?'g':parseFloat(kd)>=1.04?'c':'w';
+  const wrC=parseFloat(p.wins/p.games)>=0.007?'g':parseFloat(p.wins/p.games)>=0.004?'c':'w';
+  const tpgC=parseFloat(tpg)>=1.5?'g':parseFloat(tpg)>=1.0?'c':'w';
+  const card=document.createElement('div');
+  card.className=`rank-card ${p.css}`;
+  card.style.animationDelay=`${i*0.05}s`;
+  card.innerHTML=`
+    <div class="rbar"></div><div class="routline"></div>
+    <div class="rinner">
+      <div class="rtop">
+        <div class="rbadge">${p.rank}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="rnamerow">
+            <span class="rname">${p.name}</span>
+            <span class="rtag rtag-lv">${p.lv}</span>
+            ${p.isNew?'<span class="rtag rtag-new">NOUVEAU</span>':''}
+            ${p.pen?'<span class="rtag rtag-pen">PÉNALITÉ</span>':''}
+          </div>
+          <div class="win-pill">🏆 ${p.wins.toLocaleString()} WINS · ${fmt(p.games)} PARTIES</div>
+        </div>
+      </div>
+      <div class="rstory ${p.sc}">${p.story}</div>
+      <div class="rstats">
+        <div class="rstat"><div class="rstat-l">Win Rate</div><div class="rstat-v ${wrC}">${wr}</div></div>
+        <div class="rstat"><div class="rstat-l">K/D Ratio</div><div class="rstat-v ${kdC}">${kd}</div></div>
+        <div class="rstat"><div class="rstat-l">Tricks/Partie</div><div class="rstat-v ${tpgC}">${tpg}</div></div>
+        <div class="rstat"><div class="rstat-l">Victoires</div><div class="rstat-v g">${p.wins.toLocaleString()}</div></div>
+        <div class="rstat"><div class="rstat-l">Parties</div><div class="rstat-v">${fmt(p.games)}</div></div>
+      </div>
+    </div>`;
+  cont.appendChild(card);
+});
+</script>
+</body>
+</html>
+HTMLEOF
+echo "done"
